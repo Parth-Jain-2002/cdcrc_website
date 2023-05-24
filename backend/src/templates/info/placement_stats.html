@@ -12,6 +12,52 @@
 
 <div class="placement_stats_wrapper">
   <div class="heading">Placement Statistics</div>
+  
+
+  <div class="table-section">
+    {% for item in allItems %}
+
+    <div class="subheading">B. Tech Placement {{item.0.0}}</div>
+    <br/>
+    <div class="table-wrapper">
+      <table>
+        <tr id="header">
+          <th>Records</th>
+          {% for branch in item.0 %}
+            {% if forloop.counter == 1 %}
+            {% else %}
+            <th>{{ branch }}</th>
+            {% endif %}
+          {% endfor %}
+        </tr>
+
+        {% for row in item %}
+        {%if forloop.counter == 1%}
+        {% else %}
+          <tr>
+            <td>{{row.0}}</td>
+
+            {% for data in row %}
+            {%if forloop.counter == 1%}
+            {% else %}
+            <th>
+              {{data}}
+            </th>
+            {% endif %}
+            {% endfor %}
+
+          </tr>
+        {% endif %}
+        {% endfor %}
+
+
+      </table>
+    </div>
+    <br /><br />
+    {% endfor %}
+  </div>
+
+
 
   <div class="table-section">
     <div class="subheading">B.Tech Placement 2019-20</div>

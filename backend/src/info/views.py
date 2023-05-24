@@ -13,6 +13,8 @@ from utils.mailer import Mailer
 from utils.metadata import CDCRC_MEDIA_EMAIL, PRIMARY_ALERT_EMAILS, PRIMARY_PHONE
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
+import requests
+
 
 # Create your views here.
 def home(request):
@@ -136,6 +138,28 @@ def contact_us_form(request):
 
 
 def placement_stats(request):
-    return render(request, 'info/placement_stats.html')
+
+    url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR04GjBFXPup1OhiDk4OH_kDReVpsKBs8nKYIo_sPo6oNofPq10R8IHo6hb3f6FmN7W1QXLbeiZb_ee/pub?output=tsv'
+
+    req = requests.get(url).text
+
+    allItems = []
+    item = []
+    for data_string in req.split('\n'):
+        if(data_string.startswith('NEW')):
+            if(item): # adding item to allItems if item is not empty
+                allItems.append(item)
+            item=[] # clearing item for new values
+            continue
+
+        # removing \r from the end of each data value
+        data_values = [data.rstrip('\r') for data in data_string.split('\t')]
+        item.append(data_values) # adding data_values to item
+
+    # add the last item
+    if(item):
+        allItems.append(item)
+    
+    return render(request, 'info/placement_stats.html', {'allItems': allItems})
 
 
