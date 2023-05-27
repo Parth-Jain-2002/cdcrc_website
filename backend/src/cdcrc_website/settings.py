@@ -188,3 +188,10 @@ MARTOR_TOOLBAR_BUTTONS = [
     'link', 'image-link', 'image-upload', 'emoji',
     'direct-mention', 'toggle-maximize', 'help'
 ]
+
+
+
+# Google Sheet links and gid
+FACULTY_MEMBERS_SHEET = os.environ.get('FACULTY_MEMBERS_SHEET')
+STUDENT_MEMBERS_SHEET = os.environ.get('STUDENT_MEMBERS_SHEET')
+PLACEMENTS_SHEET = os.environ.get('PLACEMENTS_SHEET')
