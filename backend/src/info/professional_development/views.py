@@ -8,7 +8,8 @@ from recruiter.models import Recruiter
 from django.db.models import Q
 from config.utils import get_page_visibility_status
 from info.models import Events
-
+from django.conf import settings
+import requests
 
 def about(request):
     if(get_page_visibility_status('pd_about')==False):
@@ -70,10 +71,26 @@ def videos(request):
     }
     return render(request, 'info/professional_development/videos.html', context=context)
 
+
+def parse_sheet_url(sheet_url):
+    """Returns the sheet_id and gid from the sheet_url"""
+    sheet_id = sheet_url.split('/')[5]
+    gid = sheet_url.split('/')[6].split('=')[1]
+    return f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=tsv&gid={gid}"
+
+def get_message_from_google_sheet(sheet_url):
+    url = parse_sheet_url(sheet_url)
+    response = requests.get(url)
+    if response.status_code != 200:
+        raise Exception('Error fetching data from Google Sheets')
+    data = response.content.decode('utf-8')
+    return data.replace('\n', '<br>').replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+
 def hod_message(request):
     if(get_page_visibility_status('pd_hod_message')==False):
         return render(request, 'under_construction.html')
-    return render(request, 'info/professional_development/hod_message.html')
+    message = get_message_from_google_sheet(settings.VICECHAIRMANS_SHEET)
+    return render(request, 'info/professional_development/hod_message.html', {'message': message})
 
 def pg_resources(request):
     context = {
