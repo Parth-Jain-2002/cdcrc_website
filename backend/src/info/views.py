@@ -16,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from .team_member import TeamMember
 from django.conf import settings
 import requests
+from functools import lru_cache
 
 # Create your views here.
 def home(request):
@@ -25,7 +26,17 @@ def home(request):
     return render(request, 'info/home.html',{'news':news,'events':events, 'recruiters': recruiters})
 
 def messages(request):
-    return render(request, 'info/messages.html')
+    MAX_NO_OF_WORDS = 100
+    directors_message = ' '.join(get_message_from_google_sheet(settings.DIRECTORS_SHEET).split(' ')[:MAX_NO_OF_WORDS]) + '...'
+    chairpersons_message = ' '.join(get_message_from_google_sheet(settings.CHAIRPERSONS_SHEET).split(' ')[:MAX_NO_OF_WORDS]) + '...'
+    vicechairmans_message = ' '.join(get_message_from_google_sheet(settings.VICECHAIRMANS_SHEET).split(' ')[:MAX_NO_OF_WORDS]) + '...'
+    print(directors_message, chairpersons_message, vicechairmans_message, sep='\n')
+    context = {
+        'directors_message': directors_message,
+        'chairpersons_message': chairpersons_message,
+        'vicechairmans_message': vicechairmans_message,
+    }
+    return render(request, 'info/messages.html', context=context)
 
 def contacts(request):
     return render(request, 'info/contacts.html')
@@ -82,20 +93,20 @@ def events_detail(request, pk):
     events = Events.objects.get(pk=pk)
     return render(request,'info/events_detail.html',{'events':events})
 
+def parse_sheet_url(sheet_url):
+    """Returns the sheet_id and gid from the sheet_url"""
+    sheet_id = sheet_url.split('/')[5]
+    gid = sheet_url.split('/')[6].split('=')[1]
+    return f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=tsv&gid={gid}"
+
+# @lru_cache(maxsize=None)
 def get_team_data(sheet_url):
     """
     Returns a list of TeamMember objects
     Fetches data from Google Sheets
     """
-    def parse_sheet_url(sheet_url):
-        """Returns the sheet_id and gid from the sheet_url"""
-        sheet_id = sheet_url.split('/')[5]
-        gid = sheet_url.split('/')[6].split('=')[1]
-        return sheet_id, gid
 
-    sheet_id, gid = parse_sheet_url(sheet_url)
-
-    url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=tsv&gid={gid}"
+    url = parse_sheet_url(sheet_url)
     response = requests.get(url)
     if response.status_code != 200:
         raise Exception('Error fetching data from Google Sheets')
@@ -129,8 +140,18 @@ def student_team(request):
 def under_construction(request):
     return render(request, 'under_construction.html')
 
+# @lru_cache(maxsize=None)
+def get_message_from_google_sheet(sheet_url):
+    url = parse_sheet_url(sheet_url)
+    response = requests.get(url)
+    if response.status_code != 200:
+        raise Exception('Error fetching data from Google Sheets')
+    data = response.content.decode('utf-8')
+    return data.replace('\n', '<br>').replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+
 def directors_message(request):
-    return render(request, 'info/directors_message.html')
+    message = get_message_from_google_sheet(settings.DIRECTORS_SHEET)
+    return render(request, 'info/directors_message.html', {'message': message})
 
 def vision_statement(request):
     return render(request, 'info/vision_statement.html')
@@ -142,7 +163,8 @@ def corporate_relations_home(request):
 def tnp_hod_message(request):
     if(get_page_visibility_status('tnp_hod_message')==False):
         return render(request, 'under_construction.html')
-    return render(request, 'info/tnp_hod_message.html')
+    message = get_message_from_google_sheet(settings.CHAIRPERSONS_SHEET)
+    return render(request, 'info/tnp_hod_message.html', {'message': message})
 
 
 def contact_us_form(request):

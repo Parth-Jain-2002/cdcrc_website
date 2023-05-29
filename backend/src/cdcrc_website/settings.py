@@ -190,8 +190,14 @@ MARTOR_TOOLBAR_BUTTONS = [
 ]
 
 
-
 # Google Sheet links and gid
-FACULTY_MEMBERS_SHEET = os.environ.get('FACULTY_MEMBERS_SHEET')
-STUDENT_MEMBERS_SHEET = os.environ.get('STUDENT_MEMBERS_SHEET')
-PLACEMENTS_SHEET = os.environ.get('PLACEMENTS_SHEET')
+# FACULTY_MEMBERS_SHEET = os.environ.get('FACULTY_MEMBERS_SHEET')
+# STUDENT_MEMBERS_SHEET = os.environ.get('STUDENT_MEMBERS_SHEET')
+# PLACEMENTS_SHEET = os.environ.get('PLACEMENTS_SHEET')
+# print(FACULTY_MEMBERS_SHEET, STUDENT_MEMBERS_SHEET, PLACEMENTS_SHEET)
+FACULTY_MEMBERS_SHEET = 'https://docs.google.com/spreadsheets/d/13oeVihTyqm2XTwgJ2sXBX6ghDMoPB7LTffHC7gaWBBE/edit#gid=0'
+STUDENT_MEMBERS_SHEET = 'https://docs.google.com/spreadsheets/d/13oeVihTyqm2XTwgJ2sXBX6ghDMoPB7LTffHC7gaWBBE/edit#gid=1884841381'
+PLACEMENTS_SHEET = 'https://docs.google.com/spreadsheets/d/13oeVihTyqm2XTwgJ2sXBX6ghDMoPB7LTffHC7gaWBBE/edit#gid=1054840129'
+DIRECTORS_SHEET = 'https://docs.google.com/spreadsheets/d/13oeVihTyqm2XTwgJ2sXBX6ghDMoPB7LTffHC7gaWBBE/edit#gid=1913456790'
+CHAIRPERSONS_SHEET = 'https://docs.google.com/spreadsheets/d/13oeVihTyqm2XTwgJ2sXBX6ghDMoPB7LTffHC7gaWBBE/edit#gid=1631628272'
+VICECHAIRMANS_SHEET = 'https://docs.google.com/spreadsheets/d/13oeVihTyqm2XTwgJ2sXBX6ghDMoPB7LTffHC7gaWBBE/edit#gid=1861857351'
