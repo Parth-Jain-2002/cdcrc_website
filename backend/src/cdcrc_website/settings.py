@@ -188,3 +188,5 @@ MARTOR_TOOLBAR_BUTTONS = [
     'link', 'image-link', 'image-upload', 'emoji',
     'direct-mention', 'toggle-maximize', 'help'
 ]
+
+PLACEMENTS_SHEET = os.environ.get('DJANGO_PLACEMENT_SHEET_URL')

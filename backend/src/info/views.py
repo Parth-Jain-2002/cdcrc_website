@@ -14,6 +14,7 @@ from utils.metadata import CDCRC_MEDIA_EMAIL, PRIMARY_ALERT_EMAILS, PRIMARY_PHON
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 import requests
+from django.conf import settings
 
 
 # Create your views here.
@@ -135,13 +136,22 @@ def contact_us_form(request):
 
 
 
+def parse_sheet_url(sheet_url):
+    """Returns the sheet_id and gid from the sheet_url"""
+    sheet_id = sheet_url.split('/')[5]
+    gid = sheet_url.split('/')[6].split('=')[1]
 
+    return sheet_id, gid
 
 def placement_stats(request):
 
-    url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR04GjBFXPup1OhiDk4OH_kDReVpsKBs8nKYIo_sPo6oNofPq10R8IHo6hb3f6FmN7W1QXLbeiZb_ee/pub?output=tsv'
+    sheet_url = settings.PLACEMENTS_SHEET
+    sheet_id, gid = parse_sheet_url(sheet_url)
+
+    url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=tsv&gid={gid}"
 
     req = requests.get(url).text
+
 
     allItems = []
     item = []
