@@ -39,7 +39,7 @@ class INF(models.Model):
 
 class StudentDemographic(models.Model):
     category_choices = [
-        ('ugp', 'UG for Placement'),
+        ('ugt', 'UG for Placement'),
         ('pgp', 'PG for Placement'),
         ('ugi', 'UG for Internships'),
         ('pgi', 'PG for Internships'), 

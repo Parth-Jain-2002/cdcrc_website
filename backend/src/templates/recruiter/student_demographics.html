@@ -25,35 +25,39 @@
     </div>
     <div class="recruiter_text">
       <div class="row">
+        {% for demographic in demographics %}
         <div class="chartwrap">
+
           <div>
-            <h3 class="subheading theme-col">UG Students Graduating in 2022</h3>
+            {% if demographic.0.0 == 'Title' %}
+            <h3 class="subheading theme-col">{{demographic.0.1}}</h3>
+            {%endif%}
           </div>
-          <div id="chartdiv1" class="chartdiv">
+
+          <div id="chartdiv{{forloop.counter}}"" class="chartdiv"> 
             <script>
               am4core.ready(function () {
-
+                
                 // Themes begin
                 am4core.useTheme(am4themes_animated);
                 // Themes end
-
-                var chart = am4core.create("chartdiv1", am4charts.PieChart);
+                
+                var chart = am4core.create("chartdiv{{forloop.counter}}", am4charts.PieChart);
                 chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-                var demographics = []
-                "{% for demographic in demographics %}"
-                {
-                  "{%  if demographic.category == 'ugp' %}"
+                
+                var Demographics = []
+                
+                "{% for demographic_data in demographic %}"
+                  "{%if demographic_data.0 != 'Title' %}"
                   {
-                    let demographic = { department: "{{ demographic.get_department_display|safe }}", strength: " {{ demographic.strength|safe }}" }
-                    demographics.push(demographic);
+
+                    let data = { department: "{{ demographic_data.0 }}", strength: " {{ demographic_data.1 }}" }
+                    Demographics.push(data);
                   }
-                  "{% endif %}"
-                }
-                "{% endfor %}"
-
-
-                chart.data = demographics;
+                  "{%endif%}"
+                "{%endfor%}"
+                
+                chart.data = Demographics;
 
                 var series = chart.series.push(new am4charts.PieSeries());
                 series.dataFields.category = "department";
@@ -64,87 +68,11 @@
               }); // end am4core.ready()
             </script>
           </div>
+
+
         </div>
-        <div class="chartwrap">
-          <div>
-            <h3 class="subheading theme-col">PG Students Graduating in 2022</h3>
-          </div>
-          <div id="chartdiv2" class="chartdiv">
-            <script>
-              am4core.ready(function () {
-
-                // Themes begin
-                am4core.useTheme(am4themes_animated);
-                // Themes end
-
-                var chart = am4core.create("chartdiv2", am4charts.PieChart);
-                chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-                var demographics = []
-                "{% for demographic in demographics %}"
-                {
-                  "{%  if demographic.category == 'pgp' %}"
-                  {
-                    let demographic = { department: "{{ demographic.get_department_display|safe }}", strength: " {{ demographic.strength|safe }}" }
-                    demographics.push(demographic);
-                  }
-                  "{% endif %}"
-                }
-                "{% endfor %}"
-
-
-                chart.data = demographics;
-
-                var series = chart.series.push(new am4charts.PieSeries());
-                series.dataFields.category = "department";
-                series.dataFields.value = "strength";
-                series.labels.template.text = "{category}: {value.value}";
-                //chart.logo.disabled = true;
-
-              }); // end am4core.ready()
-            </script>
-          </div>
-        </div>
-        <div class="chartwrap">
-          <div>
-            <h3 class="subheading theme-col">UG Students Interning in Summer of 2022</h3>
-          </div>
-          <div id="chartdiv3" class="chartdiv">
-            <script>
-              am4core.ready(function () {
-
-                // Themes begin
-                am4core.useTheme(am4themes_animated);
-                // Themes end
-
-                var chart = am4core.create("chartdiv3", am4charts.PieChart);
-                chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-                var demographics = []
-                "{% for demographic in demographics %}"
-                {
-                  "{%  if demographic.category == 'ugi' %}"
-                  {
-                    let demographic = { department: "{{ demographic.get_department_display|safe }}", strength: " {{ demographic.strength|safe }}" }
-                    demographics.push(demographic);
-                  }
-                  "{% endif %}"
-                }
-                "{% endfor %}"
-
-
-                chart.data = demographics;
-
-                var series = chart.series.push(new am4charts.PieSeries());
-                series.dataFields.category = "department";
-                series.dataFields.value = "strength";
-                series.labels.template.text = "{category}: {value.value}";
-                //chart.logo.disabled = true;
-
-              }); // end am4core.ready()
-            </script>
-          </div>
-        </div>
+        {%endfor%}
+        
       </div>
     </div>
   </div>

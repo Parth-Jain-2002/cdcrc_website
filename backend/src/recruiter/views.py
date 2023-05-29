@@ -8,6 +8,8 @@ import json
 from utils.pdf_generator import render_to_pdf
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core import serializers
+import requests
+from django.conf import settings
 
 
 def guide(request):
@@ -20,7 +22,26 @@ def recruiter_guide(request):
     return render(request, 'recruiter/recruiter_guide.html')
 
 def student_demographics(request):
-    demographics = StudentDemographic.objects.all()
+    url = settings.STUDENT_DEMOGRAPHIC_SHEET
+    req = requests.get(url).text
+    allItems = []
+    item = []
+    for data_string in req.split('\n'):
+        if(data_string.startswith('#NEW')):
+            if(item): # adding item to allItems if item is not empty
+                allItems.append(item)
+            item=[] # clearing item for new values
+            continue
+
+        # removing \r from the end of each data value
+        data_values = [data.rstrip('\r') for data in data_string.split('\t')]
+        item.append(data_values) # adding data_values to item
+
+    # add the last item
+    if(item):
+        allItems.append(item)
+
+    demographics = allItems
     return render(request, 'recruiter/student_demographics.html',{'demographics': demographics})
 
 def six_month_internship(request):

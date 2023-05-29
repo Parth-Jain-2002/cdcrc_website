@@ -190,8 +190,8 @@ MARTOR_TOOLBAR_BUTTONS = [
 ]
 
 
-
 # Google Sheet links and gid
 FACULTY_MEMBERS_SHEET = os.environ.get('FACULTY_MEMBERS_SHEET')
 STUDENT_MEMBERS_SHEET = os.environ.get('STUDENT_MEMBERS_SHEET')
 PLACEMENTS_SHEET = os.environ.get('PLACEMENTS_SHEET')
+STUDENT_DEMOGRAPHIC_SHEET = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQl9t8FdDcHEpr0RRcTg9xJXm8Z_mCeYvKP9-5HygqkGXOJWk9h67dTecyOunFjKYpdLmd3L0BWWVsN/pub?gid=255931748&single=true&output=tsv'

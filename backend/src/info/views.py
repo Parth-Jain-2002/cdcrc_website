@@ -167,15 +167,18 @@ def contact_us_form(request):
         return render(request, 'info/contact_us_form.html', context={'title': title, 'form':form})
 
 
-
-def parse_sheet_url(sheet_url):
-    """Returns the sheet_id and gid from the sheet_url"""
-    sheet_id = sheet_url.split('/')[5]
-    gid = sheet_url.split('/')[6].split('=')[1]
-
-    return sheet_id, gid
-
 def placement_stats(request):
+
+    """
+    Renders the placement stats page, using the data from the placements sheet
+    """
+
+    def parse_sheet_url(sheet_url):
+        """Returns the sheet_id and gid from the sheet_url"""
+        sheet_id = sheet_url.split('/')[5]
+        gid = sheet_url.split('/')[6].split('=')[1]
+
+        return sheet_id, gid
 
     sheet_url = settings.PLACEMENTS_SHEET
     sheet_id, gid = parse_sheet_url(sheet_url)
