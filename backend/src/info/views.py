@@ -16,7 +16,9 @@ from django.contrib.auth.decorators import login_required
 from .team_member import TeamMember
 from django.conf import settings
 import requests
+from django.conf import settings
 from functools import lru_cache
+
 
 # Create your views here.
 def home(request):
@@ -187,10 +189,44 @@ def contact_us_form(request):
         return render(request, 'info/contact_us_form.html', context={'title': title, 'form':form})
 
 
-
-
-
 def placement_stats(request):
-    return render(request, 'info/placement_stats.html')
+
+    """
+    Renders the placement stats page, using the data from the placements sheet
+    """
+
+    def parse_sheet_url(sheet_url):
+        """Returns the sheet_id and gid from the sheet_url"""
+        sheet_id = sheet_url.split('/')[5]
+        gid = sheet_url.split('/')[6].split('=')[1]
+
+        return sheet_id, gid
+
+    sheet_url = settings.PLACEMENTS_SHEET
+    sheet_id, gid = parse_sheet_url(sheet_url)
+
+    url = f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=tsv&gid={gid}"
+
+    req = requests.get(url).text
+
+
+    allItems = []
+    item = []
+    for data_string in req.split('\n'):
+        if(data_string.startswith('NEW')):
+            if(item): # adding item to allItems if item is not empty
+                allItems.append(item)
+            item=[] # clearing item for new values
+            continue
+
+        # removing \r from the end of each data value
+        data_values = [data.rstrip('\r') for data in data_string.split('\t')]
+        item.append(data_values) # adding data_values to item
+
+    # add the last item
+    if(item):
+        allItems.append(item)
+    
+    return render(request, 'info/placement_stats.html', {'allItems': allItems})
 
 
