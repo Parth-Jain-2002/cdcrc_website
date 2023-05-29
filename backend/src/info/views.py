@@ -16,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from .team_member import TeamMember
 from django.conf import settings
 import requests
+from django.conf import settings
 
 
 # Create your views here.
