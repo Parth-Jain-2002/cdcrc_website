@@ -24,6 +24,9 @@ from functools import lru_cache
 def home(request):
     news = News.objects.all()
     events = Events.objects.all()
+    events = events.order_by('date').all().reverse() # sort events by date so that latest event is shown first
+    for event in events:
+        print(event.url)
     recruiters = Recruiter.objects.filter(visible=True)
     return render(request, 'info/home.html',{'news':news,'events':events, 'recruiters': recruiters})
 

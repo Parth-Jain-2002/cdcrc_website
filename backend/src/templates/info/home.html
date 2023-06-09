@@ -116,7 +116,10 @@
                   {% else %}
                   <p class="data">{{event.date}}</p>
                   {% endif %}
-                  <p class="data">{{news_item.brief}}</p>
+                  {%if event.url and event.url != "" %}
+                  <a target="_blank" href="{{event.url}}">Visit Here</a>
+                  {%endif%}
+                  <p class="data">{{event.brief}}</p>
                 </div>
               </div>
               {% endfor %}

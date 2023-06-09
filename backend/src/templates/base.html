@@ -24,6 +24,19 @@
 </head>
 
 <body>
+
+  <!-- Event block at the top of the page -->
+  {%for event in events%}
+  {%if forloop.counter == 1%}
+  <h6 class="m-1 p-1 text-center">
+    {{event.title}} 
+    {%if event.url and event.url != ""%}
+    <a target="_blank" href="{{event.url}}" > Visit here </a>
+    {%endif%}
+  </h6>
+  {%endif%}
+  {%endfor%}
+
   <div class="header_wrapper">
     <div class="contact-info-wrapper">
       <div class="contact-info">
