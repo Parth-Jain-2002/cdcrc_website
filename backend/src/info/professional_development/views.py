@@ -3,7 +3,7 @@ Views for the professional development section
 """
 
 from django.shortcuts import render
-from info.models import ProfessionalDevelopmentActivity, ProfessionalDevelopmentBook, ProfessionalDevelopmentVideo, ProfessionalDevelopmentInitiatives
+from info.models import ProfessionalDevelopmentActivity, ProfessionalDevelopmentBook, ProfessionalDevelopmentVideo, ProfessionalDevelopmentInitiatives, Messages
 from recruiter.models import Recruiter
 from django.db.models import Q
 from config.utils import get_page_visibility_status
@@ -89,8 +89,10 @@ def get_message_from_google_sheet(sheet_url):
 def hod_message(request):
     if(get_page_visibility_status('pd_hod_message')==False):
         return render(request, 'under_construction.html')
-    message = get_message_from_google_sheet(settings.VICECHAIRMANS_SHEET)
-    return render(request, 'info/professional_development/hod_message.html', {'message': message})
+    # message = get_message_from_google_sheet(settings.VICECHAIRMANS_SHEET)
+    # return render(request, 'info/professional_development/hod_message.html', {'message': message})
+    vicechairperson = Messages.objects.filter(authorDesignation='Vice Chairperson')[0]
+    return render(request, 'info/tnp_hod_message.html', {'chairperson': vicechairperson})
 
 def pg_resources(request):
     context = {
