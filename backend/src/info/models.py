@@ -13,7 +13,7 @@ class ContactUsResponse(models.Model):
     message = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return self.name + " " + self.organization
+        return self.name
 
 
 class News(models.Model):
@@ -116,3 +116,15 @@ class ProfessionalDevelopmentInitiatives(models.Model):
     def __str__(self):
         return self.title
 
+
+authorDesignationChoices = ("Director", "Chairperson", "Vice Chairperson")
+class Messages(models.Model):
+    title = models.CharField(max_length=256, null=False, blank=False)
+    # Either Director, Chairperson or Vice Chairperson
+    authorDesignation = models.CharField(max_length=256, null=False, blank=False, choices=[(x, x) for x in authorDesignationChoices])
+    brief = models.TextField(null=False, blank=False, help_text='Try to keep it less than 300 chars')
+    detail = models.TextField(null=True, blank=True)
+    photo = models.ImageField()
+
+    def __str__(self):
+        return self.title

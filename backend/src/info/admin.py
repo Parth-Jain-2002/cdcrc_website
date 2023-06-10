@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import News,Events, Resource, ProfessionalDevelopmentActivity, ProfessionalDevelopmentBook, ProfessionalDevelopmentVideo, CorporateRelationsActivity
-from .models import ResourceCategory, Department, ProfessionalDevelopmentInitiatives, ResourceImage, ContactUsResponse
+from .models import ResourceCategory, Department, ProfessionalDevelopmentInitiatives, ResourceImage, ContactUsResponse, Messages
 from martor.widgets import AdminMartorWidget
 from django.db import models
 
@@ -33,3 +33,4 @@ admin.site.register(ResourceImage)
 admin.site.register(Department)
 admin.site.register(ProfessionalDevelopmentInitiatives)
 admin.site.register(ContactUsResponse)
+admin.site.register(Messages)
