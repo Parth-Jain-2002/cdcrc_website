@@ -9,4 +9,4 @@ PRIMARY_ALERT_EMAILS = [
     'cdcrc.media@iitrpr.ac.in',
 ]
 
-PRIMARY_PHONE = '8699020183'
+PRIMARY_PHONE = '8847027089'
