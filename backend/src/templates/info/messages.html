@@ -8,13 +8,13 @@
 <div class="home_page_container">
     <div class="custom_container">
         <div class="directors_message">
-            <div class="heading">The Director's Message</div>
-            <p>
-                {{ directors_message | safe}}
-                <br />
-                <br />
-                <a href="{% url 'info:directors_message' %}">Read More...</a>
-            </p>
+            <div class="heading">{{ director.title }}</div>
+            <div style="width: 100%; border:1px solid white; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); background-color: white;">
+				<div class="col-md-12" style="background-color:white; font-size: 1rem; padding: 1rem;">
+						{{ director.brief | linebreaks }}
+					<button class="btn btn-info"><a style="color: white;" href="{% url 'info:directors_message' %}">Read More...</a></button>
+				</div>
+			</div>
         </div>
         <!-- <div class="directors_message">
             <div class="heading">Associate Dean's Message</div>
@@ -24,20 +24,22 @@
             </p>
         </div> -->
         <div class="directors_message">
-            <div class="heading">Chairperson's Message</div>
-            <p>
-                {{ chairpersons_message | safe}}
-                <br><br>
-                <a href="{% url 'info:tnp_hod_message' %}">Read More...</a>
-            </p>
+            <div class="heading">{{ chairperson.title }}</div>
+            <div style="width: 100%; border:1px solid white; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); background-color: white;">
+				<div class="col-md-12" style="background-color:white; font-size: 1rem; padding: 1rem;">
+						{{ chairperson.brief | linebreaks }}
+					<button class="btn btn-info"><a style="color: white;" href="{% url 'info:tnp_hod_message' %}">Read More...</a></button>
+				</div>
+			</div>
         </div>
         <div class="directors_message">
-            <div class="heading">Vice Chairperson's Message</div>
-            <p>
-                {{ vicechairmans_message | safe}}
-                <br><br>
-                <a href="{% url 'info:pd_hod_message' %}">Read More...</a>
-            </p>
+            <div class="heading">{{ vicechairperson.title }}</div>
+            <div style="width: 100%; border:1px solid white; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); background-color: white;">
+				<div class="col-md-12" style="background-color:white; font-size: 1rem; padding: 1rem;">
+						{{ vicechairperson.brief | linebreaks }}
+					<button class="btn btn-info"><a style="color: white;" href="{% url 'info:pd_hod_message' %}">Read More...</a></button>
+				</div>
+			</div>
         </div>
     </div>
 

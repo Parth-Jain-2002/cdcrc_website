@@ -23,19 +23,17 @@
 				<h1 style="margin-top:1em; margin-bottom:1em; color:white;">A Message<br> from the<br> Director's Desk</h1>
 			</div>
 			<div class="col-md-2" style="padding:0;">
-				<img style="object-fit:cover;height:20em; width:100%;" src="{% static 'info/images/director_3.jpg' %}" alt="Director's Image" style="width:100%;">
+				<img style="object-fit:cover;height:20em; width:100%;" src="{{ director.photo.url }}" alt="Director's Image" style="width:100%;">
 			</div>
 
 		</div>
 		<div class="row">
-			{% comment %} <div class="col-md-1"></div> {% endcomment %}
-			<div class="col-md-12" style="background-color:white;">
-				<p style="color:black; padding:1em;" >
-					{{ message|safe }}
-				</p>
+			<div style="width: 90%; border:1px solid white; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); background-color: white; margin: 1% 5%;">
+				<span style="font-size: 6rem; line-height: 4rem; color: #aaa; user-select: none; top: 2rem; position: relative;">“</span>
+				<div class="col-md-12" style="background-color:white; font-size: 1rem; padding-left: 1rem;">
+						{{ director.detail|linebreaks }}
+				</div>
 			</div>
-			{% comment %} <div class="col-md-6"></div>
-			<div class="col-md-1"></div> {% endcomment %}
 
 		</div>
 	</div>
