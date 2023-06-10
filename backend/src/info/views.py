@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from info.models import News, Events, Resource, ResourceCategory, ResourceImage
+from info.models import News, Events, Resource, ResourceCategory, ResourceImage, Messages
 from recruiter.models import Recruiter
 from profiles.models import TeamMemberProfile
 from django.db.models import Q
@@ -31,15 +31,25 @@ def home(request):
     return render(request, 'info/home.html',{'news':news,'events':events, 'recruiters': recruiters})
 
 def messages(request):
-    MAX_NO_OF_WORDS = 100
-    directors_message = ' '.join(get_message_from_google_sheet(settings.DIRECTORS_SHEET).split(' ')[:MAX_NO_OF_WORDS]) + '...'
-    chairpersons_message = ' '.join(get_message_from_google_sheet(settings.CHAIRPERSONS_SHEET).split(' ')[:MAX_NO_OF_WORDS]) + '...'
-    vicechairmans_message = ' '.join(get_message_from_google_sheet(settings.VICECHAIRMANS_SHEET).split(' ')[:MAX_NO_OF_WORDS]) + '...'
-    print(directors_message, chairpersons_message, vicechairmans_message, sep='\n')
+    # # Using google sheets to fetch messages
+    # MAX_NO_OF_WORDS = 100
+    # directors_message = ' '.join(get_message_from_google_sheet(settings.DIRECTORS_SHEET).split(' ')[:MAX_NO_OF_WORDS]) + '...'
+    # chairpersons_message = ' '.join(get_message_from_google_sheet(settings.CHAIRPERSONS_SHEET).split(' ')[:MAX_NO_OF_WORDS]) + '...'
+    # vicechairmans_message = ' '.join(get_message_from_google_sheet(settings.VICECHAIRMANS_SHEET).split(' ')[:MAX_NO_OF_WORDS]) + '...'
+    # print(directors_message, chairpersons_message, vicechairmans_message, sep='\n')
+    # context = {
+    #     'directors_message': directors_message,
+    #     'chairpersons_message': chairpersons_message,
+    #     'vicechairmans_message': vicechairmans_message,
+    # }
+    # return render(request, 'info/messages.html', context=context)
+    director = Messages.objects.filter(authorDesignation='Director')[0]
+    chairperson = Messages.objects.filter(authorDesignation='Chairperson')[0]
+    vicechairperson = Messages.objects.filter(authorDesignation='Vice Chairperson')[0]
     context = {
-        'directors_message': directors_message,
-        'chairpersons_message': chairpersons_message,
-        'vicechairmans_message': vicechairmans_message,
+        'director': director,
+        'chairperson': chairperson,
+        'vicechairperson': vicechairperson,
     }
     return render(request, 'info/messages.html', context=context)
 
@@ -155,8 +165,10 @@ def get_message_from_google_sheet(sheet_url):
     return data.replace('\n', '<br>').replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
 
 def directors_message(request):
-    message = get_message_from_google_sheet(settings.DIRECTORS_SHEET)
-    return render(request, 'info/directors_message.html', {'message': message})
+    # message = get_message_from_google_sheet(settings.DIRECTORS_SHEET)
+    # return render(request, 'info/directors_message.html', {'message': message})
+    director = Messages.objects.filter(authorDesignation='Director')[0]
+    return render(request, 'info/directors_message.html', {'director': director})
 
 def vision_statement(request):
     return render(request, 'info/vision_statement.html')
@@ -168,8 +180,10 @@ def corporate_relations_home(request):
 def tnp_hod_message(request):
     if(get_page_visibility_status('tnp_hod_message')==False):
         return render(request, 'under_construction.html')
-    message = get_message_from_google_sheet(settings.CHAIRPERSONS_SHEET)
-    return render(request, 'info/tnp_hod_message.html', {'message': message})
+    # message = get_message_from_google_sheet(settings.CHAIRPERSONS_SHEET)
+    # return render(request, 'info/tnp_hod_message.html', {'message': message})
+    chairperson = Messages.objects.filter(authorDesignation='Chairperson')[0]
+    return render(request, 'info/tnp_hod_message.html', {'chairperson': chairperson})
 
 
 def contact_us_form(request):
